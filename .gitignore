@@ -1,1 +1,5 @@
 mqtt_exemplo.py
+moduloGateway/__pycache__/
+moduloGateway/gerenciador/__pycache__/
+moduloGateway/avaliador/__pycache__/
+moduloGateway/persistencia/__pycache__/
