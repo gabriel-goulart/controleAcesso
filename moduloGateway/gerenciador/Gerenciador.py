@@ -38,8 +38,9 @@ class Gerenciador:
         print('Mensagem recebida no tópico: %s' % msg.topic)
 
         if msg.topic == 'conect':
-            print(msg.payload)
-            self.gateway.msg()
+            info = msg.payload.decode('utf-8')
+            print("Mensagem: %s" % info)
+            self.gateway.acessoSolicitado(info)
         else:
             print('Tópico desconhecido.')
 

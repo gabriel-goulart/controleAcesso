@@ -1,5 +1,6 @@
 from Gateway import Gateway
+import json
 
 if __name__ == "__main__":
-    game = Gateway()
-    game.start()
+    gateway = Gateway()
+    gateway.start()
