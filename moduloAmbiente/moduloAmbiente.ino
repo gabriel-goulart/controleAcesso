@@ -108,7 +108,7 @@ void loop() {
     {
        //Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : "");
        //Serial.print(mfrc522.uid.uidByte[i], HEX);
-       conteudo.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : ""));
+       conteudo.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? "0" : ""));
        conteudo.concat(String(mfrc522.uid.uidByte[i], HEX));
     }
     String pubInfo = "{\"ambiente\": 1,\"usuario\": \" "+conteudo+"\" , \"contexto\" : [{\"recurso\": 1, \"valor\" : true}]}";
