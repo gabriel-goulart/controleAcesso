@@ -1,5 +1,7 @@
 import paho.mqtt.client as mqtt
-
+#import configs
+from Config import MQTT_INFO
+#import classes
 import Gateway
 
 class Gerenciador:
@@ -8,9 +10,9 @@ class Gerenciador:
 
     def __init__(self, gateway):
         self.gateway = gateway
-        self.MQTT_ADDRESS = '192.168.1.100'
-        self.MQTT_PORT = 1883
-        self.MQTT_TIMEOUT = 60
+        self.MQTT_ADDRESS = MQTT_INFO['host']
+        self.MQTT_PORT =  MQTT_INFO['porta']
+        self.MQTT_TIMEOUT =  MQTT_INFO['timeout']
 
     def start(self):
         self.client = mqtt.Client()
@@ -18,11 +20,11 @@ class Gerenciador:
         self.client.on_subscribe = self.on_subscribe
         self.client.on_message = self.on_message
         self.client.connect(self.MQTT_ADDRESS, self.MQTT_PORT,self. MQTT_TIMEOUT)
-        self.client.subscribe('conect')
+        self.client.subscribe('TagIdentificada')
         self.client.loop_forever()
 
-    def enviarMensagem(self,msg):
-        result, mid = self.client.publish('access', msg)
+    def enviarMensagem(self,idAmbiente,msg):
+        result, mid = self.client.publish(idAmbiente + 'Ambiente-Acesso', msg)
         print('Mensagem enviada ao canal: %d' % mid)
         
     # MQTT METODOS   
@@ -37,9 +39,9 @@ class Gerenciador:
     def on_message(self,client, userdata, msg):
         print('Mensagem recebida no tópico: %s' % msg.topic)
 
-        if msg.topic == 'conect':
+        if msg.topic == 'TagIdentificada':
             info = msg.payload.decode('utf-8')
-            print("Mensagem: %s" % info)
+            print("Mensagem recebida do módulo de ambiente: %s" % info)
             self.gateway.acessoSolicitado(info)
         else:
             print('Tópico desconhecido.')
