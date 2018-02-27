@@ -5,7 +5,7 @@ class Tipo:
 
    # convertendo as datas
     def Data(self, *args):
-        print("#### DATA ######")
+        print("#### Tipo: DATA ######")
         dataRegra = args[0]
         dataAtual = args [1]       
         if ',' in dataRegra:           
@@ -23,7 +23,7 @@ class Tipo:
     
     # convertendo os tempos
     def Tempo(self, *args):
-        print("#### TEMPO ######")
+        print("#### Tipo: TEMPO ######")
         tempoRegra = args[0]
         tempoAtual = args[1]
         if ',' in tempoRegra:            
@@ -40,18 +40,16 @@ class Tipo:
             return tempoRegra,tempoAtual
 
     def Recurso(self, *args):
-        print("#### RECURSO ######")
+        print("#### Tipo: RECURSO ######")
         recursoRegra = args[0]
         recursoAtual = args[1]
         idRecurso = args[2]
-
+        
         if ',' in recursoRegra:
             recursoRegra1, recursoRegra2 = recursoRegra.split(",")
             recursoRegra = [recursoRegra1,recursoRegra2]
-            recursoAtual = recursoAtual[idRecurso]
+            recursoAtual = recursoAtual[idRecurso]            
             return recursoRegra, recursoAtual
-        else:
-            recursoAtual = recursoAtual[idRecurso]
-            return recursoRegra, recursoAtual
-
-        return 0,1    
+        else:            
+            recursoAtual = recursoAtual[idRecurso]           
+            return recursoRegra, recursoAtual       
