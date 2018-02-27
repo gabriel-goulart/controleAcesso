@@ -17,8 +17,8 @@ class Avaliador:
        
     def avaliar(self, contextoAtual, contextoRegra):
         print("##### Avaliando contexto #####")
-        print(contextoAtual)
-        print(contextoRegra)
+        print("Contexto Atual : %s" % str(contextoAtual))
+        print("Contexto da Regra : %s" % str(contextoRegra))
 
         # verifica se o usuario tem acesso garantido independente de contexto
         if contextoRegra == None:
