@@ -36,7 +36,7 @@ class Gateway:
 			acao = "acessando"
 			# contem todas as informações relacionadas ao acesso (usuario, ambiente, papel usuario, papel ambiente, regra de acesso)
 			informacoesAcesso = self.persistencia.getInformacoesAcesso(infoDeserializada['usuario'], infoDeserializada['ambiente'])
-			
+			print("Informações de Acesso: %s" % str(informacoesAcesso))
 			# verificando se retornou informacoes do banco de dados		
 			if informacoesAcesso != None: 
 				# montando o contexto atual
