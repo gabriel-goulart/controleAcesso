@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 #import configs
-from Config import MQTT_INFO
+from Config import MQTT_INFO,MQTT_TOPICOS_GERAIS
 #import classes
 import Gateway
 
@@ -23,8 +23,11 @@ class Gerenciador:
         self.client.subscribe('TagIdentificada')
         self.client.loop_forever()
 
-    def enviarMensagem(self,idAmbiente,msg):
-        result, mid = self.client.publish(idAmbiente + 'Ambiente-Acesso', msg)
+    def enviarMensagem(self,info):
+        print('##### Enviando Mensagem para o ambiente #####')
+        print ('Informação: %s' % str(info))
+
+        result, mid = self.client.publish(info['ambiente']+"-"+ MQTT_TOPICOS_GERAIS[info['acao']], info['resultado'])
         print('Mensagem enviada ao canal: %d' % mid)
         
     # MQTT METODOS   
@@ -37,12 +40,13 @@ class Gerenciador:
 
 
     def on_message(self,client, userdata, msg):
-        print('Mensagem recebida no tópico: %s' % msg.topic)
+        print('##### MENSAGEM RECEBIDA #####') 
+        print('Tópico: %s' % msg.topic)
 
         if msg.topic == 'TagIdentificada':
             info = msg.payload.decode('utf-8')
             print("Mensagem recebida do módulo de ambiente: %s" % info)
-            self.gateway.acessoSolicitado(info)
+            self.gateway.tagIdentificada(info)
         else:
             print('Tópico desconhecido.')
 
