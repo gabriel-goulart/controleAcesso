@@ -6,7 +6,12 @@ BD_INFO = {
 }
 
 MQTT_INFO = {
-    "host" : "192.168.1.100",
+    "host" : "192.168.0.104",
     "porta" : 1883,
     "timeout" : 60
+}
+
+MQTT_TOPICOS_GERAIS = {
+    "acessando" : "Ambiente-Acessando",
+    "saindo" : "Ambiente-Saindo"
 }
