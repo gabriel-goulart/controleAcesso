@@ -45,11 +45,16 @@ class Tipo:
         recursoAtual = args[1]
         idRecurso = args[2]
         
-        if ',' in recursoRegra:
-            recursoRegra1, recursoRegra2 = recursoRegra.split(",")
-            recursoRegra = [recursoRegra1,recursoRegra2]
-            recursoAtual = recursoAtual[idRecurso]            
+       
+        if type(recursoRegra) == str:
+
+            recursoAtual = recursoAtual[idRecurso]
+            if ',' in recursoRegra:
+                recursoRegra1, recursoRegra2 = recursoRegra.split(",")
+                recursoRegra = [float(recursoRegra1),float(recursoRegra2)]
+                recursoAtual = float(recursoAtual)
+
             return recursoRegra, recursoAtual
         else:            
             recursoAtual = recursoAtual[idRecurso]           
-            return recursoRegra, recursoAtual       
+            return float(recursoRegra), float(recursoAtual)       
