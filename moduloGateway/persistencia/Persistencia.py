@@ -40,20 +40,27 @@ class Persistencia:
         return retorno
 
     def temSessao(self, usuario, ambiente):
-        retorno = False
+        retorno = None
         query = "SELECT * FROM Sessao WHERE tag_usuario = \""+usuario+"\" AND id_ambiente = "+ambiente
 
         try:
             print("##### Buscando informações da sessão no banco de dados #####")            
             self.cursor.execute(query)
-            result = self.cursor.fetchone()            
+            result = self.cursor.fetchone()
+
             if result == None :
-                retorno = False
+                retorno = None
             else:
-                retorno = True 
+                retorno = {}
+                retorno['usuario']                  = result[0]
+                retorno['ambiente']                 = result[1]
+                retorno['id_papel_de_ambiente']     = result[2]
+                retorno['id_papel_de_usuario']      = result[3]
+                               
+             
         except:
             print("##### Buscando informações da sessão no banco de dados  - ERRO #####")
-            retorno = False
+            
         return retorno
 
     def criarSessao(self, info):
@@ -81,3 +88,27 @@ class Persistencia:
             print ("##### Deletando sessão do usuário no ambiente - ERRO #####")
             self.bd.rollback()
             return False
+    
+    def registrarEvento(self, *args):
+        tag_usuario = args[0]
+        id_ambiente = args[1]
+        id_papel_de_ambiente = args[2]
+        id_papel_de_usuario = args[3]
+        contexto_regra = args[4]
+        contexto_ambiente = args[5]
+        acao = args[6]
+        resultado = args[7]
+
+        query = "INSERT INTO Evento (tag_usuario, id_ambiente, id_papel_de_ambiente, id_papel_de_usuario,contexto_regra,contexto_ambiente,acao,resultado, datetime)  VALUES ( \""+tag_usuario+"\", "+str(id_ambiente)+", "+str(id_papel_de_ambiente)+", "+str(id_papel_de_usuario)+",\""+contexto_regra+"\",\""+contexto_ambiente+"\",\""+str(acao)+"\",\""+str(resultado)+"\", NOW()) "
+        
+        try:
+            print ("##### Registrando evento#####")
+            self.cursor.execute(query)
+            self.bd.commit()
+            return True
+        except:
+            print ("##### Registrando evento - ERRO #####")
+            self.bd.rollback()
+            return False
+
+            
