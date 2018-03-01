@@ -42,7 +42,7 @@ class Gateway:
 				# montando o contexto atual
 				contextoAtual = {}
 				contextoAtual['Data'] = time.strftime('%d/%m/%Y')
-				contextoAtual['Tempo'] = time.strftime('%H:%M')
+				contextoAtual['Horario'] = time.strftime('%H:%M')
 				contextoAtual['Recurso'] = infoDeserializada['contexto']
 				#print(infoDeserializada['contexto']['3'])
 				resultadoAvaliacao = self.avaliador.avaliar(contextoAtual,informacoesAcesso['contexto'])
@@ -55,8 +55,6 @@ class Gateway:
 				resultadoAvaliacao = False
 					
 			print("RESULTADO : " + str(resultadoAvaliacao))
-
-			# registrando evento
 			
 		else:
 			print("##### Usuário saindo no ambiente #####")
@@ -67,13 +65,20 @@ class Gateway:
 			else:
 				resultadoAvaliacao = True
 
-			# registrando evento
 		
 		# enviando o resultado de volta para o ambiente
 		retorno['ambiente'] = infoDeserializada['ambiente']
 		retorno['acao'] = acao
 		retorno['resultado'] = resultadoAvaliacao
-		self.retornoAcesso(retorno)	 	
 
-	def retornoAcesso(self, info):		
+		# registrando evento
+		#self.registrarEvento(informacoesAcesso,contextoAtual,acao,resultadoAvaliacao)
+
+		# retornando para o ambiente
+		self.retornarAcesso(retorno)	 	
+
+	def retornarAcesso(self, info):		
 		self.gerenciador.enviarMensagem(info)
+	
+	def registrarEvento(self, informacoesAcesso, contextoAtual, acao, resultadoAvaliacao):
+		return 0 

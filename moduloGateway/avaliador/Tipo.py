@@ -22,8 +22,8 @@ class Tipo:
             return dataRegra,dataAtual
     
     # convertendo os tempos
-    def Tempo(self, *args):
-        print("#### Tipo: TEMPO ######")
+    def Horario(self, *args):
+        print("#### Tipo: Horario ######")
         tempoRegra = args[0]
         tempoAtual = args[1]
         if ',' in tempoRegra:            
