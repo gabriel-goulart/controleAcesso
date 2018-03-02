@@ -6,9 +6,9 @@ BD_INFO = {
 }
 
 MQTT_INFO = {
-    "host" : "192.168.0.104",
+    "host" : "192.168.1.100",
     "porta" : 1883,
-    "timeout" : 60
+    "timeout" : 65535
 }
 
 MQTT_TOPICOS_GERAIS = {
