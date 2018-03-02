@@ -102,7 +102,7 @@ class Persistencia:
         query = "INSERT INTO Evento (tag_usuario, id_ambiente, id_papel_de_ambiente, id_papel_de_usuario,contexto_regra,contexto_ambiente,acao,resultado, datetime)  VALUES ( \""+tag_usuario+"\", "+str(id_ambiente)+", "+str(id_papel_de_ambiente)+", "+str(id_papel_de_usuario)+",\""+contexto_regra+"\",\""+contexto_ambiente+"\",\""+str(acao)+"\",\""+str(resultado)+"\", NOW()) "
         
         try:
-            print ("##### Registrando evento#####")
+            print ("##### Registrando evento #####")
             self.cursor.execute(query)
             self.bd.commit()
             return True
