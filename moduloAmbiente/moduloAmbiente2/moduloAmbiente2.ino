@@ -19,18 +19,14 @@ IPAddress ip(192, 168, 1, 121); // ip da interface de rede
 char message_buff[100];
 
 // configurações RFID
-constexpr uint8_t RST_PIN = 9;     // Configurable, see typical pin layout above
-constexpr uint8_t SS_PIN = 8;     // Configurable, see typical pin layout above
-MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance.
+constexpr uint8_t RST_PIN = 9;     
+constexpr uint8_t SS_PIN = 8;     
+MFRC522 mfrc522(SS_PIN, RST_PIN);  // instancia MFRC522
 
 // configuração LEDS
 int portaLEDVerde = 7;
 int portaLEDVermelho = 5;
 
-// configuração do sensor ultrasonico 
-#define pino_trigger 2
-#define pino_echo 3
-Ultrasonic ultrasonic(pino_trigger, pino_echo); //Inicializa o sensor nos pinos definidos acima
 
 EthernetClient ethClient;
 PubSubClient mqttClient(ethClient);
@@ -113,11 +109,6 @@ void enviaInformacoes(String msg){
 
 }
 
-// pega o valor do sensor ultrasonico em centímetros 
-float getValorSensorUltrasonico(){
-    long microsec = ultrasonic.timing();
-    return ultrasonic.convert(microsec, Ultrasonic::CM);
-}
 
 // acende o led verde por 3 segundos
 void acendeLedVerde(){
@@ -149,7 +140,7 @@ void acendeAllLeds(){
 
 void loop() {
   //Serial.println("* INICIO *");
-  // verificando a coneccao com o mqtt
+  // verificando a conexao com o mqtt
   if (!mqttClient.connected()) {
     reconectMqtt(); // reconeccao do mqtt
   }
@@ -167,9 +158,7 @@ void loop() {
        conteudo.concat(String(mfrc522.uid.uidByte[i], HEX));
     }
     acendeAllLeds();
-    float valorSensorUltrasonico = getValorSensorUltrasonico(); 
-    Serial.println(valorSensorUltrasonico);
-    String pubInfo = "{\"ambiente\": \"2\",\"usuario\": \""+conteudo+"\" ,\"contexto\" : {\"2\":"+valorSensorUltrasonico+"}}";
+    String pubInfo = "{\"ambiente\": \"2\",\"usuario\": \""+conteudo+"\" ,\"contexto\" : {}}";
     enviaInformacoes(pubInfo);
     delay(3000);
   }

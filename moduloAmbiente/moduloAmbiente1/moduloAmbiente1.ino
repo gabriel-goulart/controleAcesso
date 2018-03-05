@@ -3,6 +3,7 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <PubSubClient.h>
+#include <Ultrasonic.h>
 
 
 // configurações de rede
@@ -20,9 +21,9 @@ IPAddress ip(192, 168, 1, 120); // ip da interface de rede
 char message_buff[100];
 
 // configurações RFID
-constexpr uint8_t RST_PIN = 9;     // Configurable, see typical pin layout above
-constexpr uint8_t SS_PIN = 8;     // Configurable, see typical pin layout above
-MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance.
+constexpr uint8_t RST_PIN = 9;     
+constexpr uint8_t SS_PIN = 8;     
+MFRC522 mfrc522(SS_PIN, RST_PIN);  // instancia  MFRC522
 
 // configurações SENSORES
 int portaLDR = A5;
@@ -30,6 +31,12 @@ int portaLDR = A5;
 // configuração LEDS
 int portaLEDVerde = 7;
 int portaLEDVermelho = 5;
+
+// configuração do sensor ultrasônico 
+#define pino_trigger 2
+#define pino_echo 3
+Ultrasonic ultrasonic(pino_trigger, pino_echo); //Inicializa o sensor nos pinos definidos acima
+
 
 EthernetClient ethClient;
 PubSubClient mqttClient(ethClient);
@@ -118,6 +125,12 @@ float getValorLuminosidade(){
   return map(valor,0,1023,0,255);
 }
 
+// pega o valor do sensor ultrasônico em centímetros 
+float getValorSensorUltrasonico(){
+    long microsec = ultrasonic.timing();
+    return ultrasonic.convert(microsec, Ultrasonic::CM);
+}
+
 // acende o led verde por 3 segundos
 void acendeLedVerde(){
   digitalWrite(portaLEDVerde, HIGH);
@@ -146,7 +159,7 @@ void acendeAllLeds(){
 
 }
 void loop() {
-  // verificando a coneccao com o mqtt
+  // verificando a conexao com o mqtt
   if (!mqttClient.connected()) {
     reconectMqtt(); // reconeccao do mqtt
   }
@@ -164,9 +177,11 @@ void loop() {
        conteudo.concat(String(mfrc522.uid.uidByte[i], HEX));
     }
     acendeAllLeds();
-    float valorSensor1 = getValorLuminosidade();
-    Serial.println(valorSensor1);
-    String pubInfo = "{\"ambiente\": \"1\",\"usuario\": \""+conteudo+"\" , \"contexto\" : {\"1\":"+valorSensor1+"}}";
+    float valorSensorUltrasonico = getValorSensorUltrasonico(); 
+    Serial.println(valorSensorUltrasonico);
+    float valorSensorLuminosidade = getValorLuminosidade();
+    Serial.println(valorSensorLuminosidade);
+    String pubInfo = "{\"ambiente\": \"1\",\"usuario\": \""+conteudo+"\" , \"contexto\" : {\"1\":"+valorSensorLuminosidade+",\"2\":"+valorSensorUltrasonico+"}}";
     enviaInformacoes(pubInfo);
     delay(5000);
   }
