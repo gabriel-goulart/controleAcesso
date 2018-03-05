@@ -89,12 +89,12 @@ class Gateway:
 	
 	def registrarEvento(self, informacoesAcesso, contextoAtual, acao, resultado):
 		print("EVENTO")
-		usuario = ""
-		ambiente = ""
-		id_papel_de_ambiente = ""
-		id_papel_de_usuario = ""
-		contexto_regra = ""
-		contexto_ambiente = ""
+		usuario = "ERRO"
+		ambiente = "ERRO"
+		id_papel_de_ambiente = "ERRO"
+		id_papel_de_usuario = "ERRO"
+		contexto_regra = "SEM REGRA"
+		contexto_ambiente = "SEM REGRA"
 		resultadoAvaliacao = "ERRO"
 		if informacoesAcesso != None:
 			usuario = informacoesAcesso['usuario']
